@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Tareas</title>
+    <!-- jQuery ANTES de toastr -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <!-- SweetAlert2 para confirmaciones -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gradient">
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1 class="title">📋 Lista de Tareas</h1>
+            <p class="subtitle">Organiza tus tareas de manera eficiente</p>
+            
+            <!-- Estadísticas -->
+            <div id="stats" class="stats-container">
+                <div class="stat-item">
+                    <span class="stat-label">Total:</span>
+                    <span id="totalTasks" class="stat-value total">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Alta:</span>
+                    <span id="altaTasks" class="stat-value alta">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Media:</span>
+                    <span id="mediaTasks" class="stat-value media">0</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Baja:</span>
+                    <span id="bajaTasks" class="stat-value baja">0</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Layout en Grid -->
+        <div class="main-grid">
+            <!-- Columna Izquierda: Formulario y Filtros -->
+            <div class="left-column">
+                <!-- Formulario para agregar tareas -->
+                <div class="form-container">
+                    <div class="section-header">
+                        <span class="icon">➕</span>
+                        <h2>Nueva Tarea</h2>
+                    </div>
+                    
+                    <form id="taskForm" class="task-form">
+                        <div class="form-group">
+                            <label for="title" class="form-label">
+                                <span class="icon">🏷️</span>
+                                Título
+                            </label>
+                            <input type="text" id="title" name="title" 
+                                   class="form-input"
+                                   placeholder="Ej: Completar proyecto de programación"
+                                   maxlength="100">
+                            <div class="char-counter">
+                                <span id="charCount">0</span>/100 caracteres
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="priority" class="form-label">
+                                <span class="icon">⚡</span>
+                                Prioridad
+                            </label>
+                            <select id="priority" name="priority" class="form-select">
+                                <option value="baja">🟢 Baja</option>
+                                <option value="media">🟡 Media</option>
+                                <option value="alta">🔴 Alta</option>
+                            </select>
+                        </div>
+                        
+                        <button type="submit" class="btn-primary">
+                            <span class="icon">➕</span>
+                            Agregar Tarea
+                        </button>
+                    </form>
+                    
+                    <!-- Mensaje de error -->
+                    <div id="errorMessage" class="error-message hidden"></div>
+                </div>
+                
+                <!-- Filtros -->
+                <div class="filters-container">
+                    <div class="section-header">
+                        <span class="icon">🔍</span>
+                        <h3>Filtros</h3>
+                    </div>
+                    
+                    <div class="filter-buttons">
+                        <button id="filterAll" class="filter-btn active">
+                            <span class="icon">📋</span> Todas
+                        </button>
+                        <button id="filterAlta" class="filter-btn" data-priority="alta">
+                            <span class="icon">🔴</span> Alta Prioridad
+                        </button>
+                        <button id="filterMedia" class="filter-btn" data-priority="media">
+                            <span class="icon">🟡</span> Media Prioridad
+                        </button>
+                        <button id="filterBaja" class="filter-btn" data-priority="baja">
+                            <span class="icon">🟢</span> Baja Prioridad
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Columna Derecha: Lista de Tareas -->
+            <div class="right-column">
+                <div class="tasks-container">
+                    <!-- Header de la lista -->
+                    <div class="tasks-header">
+                        <div class="tasks-title">
+                            <span class="icon">✅</span>
+                            <h3>Mis Tareas</h3>
+                        </div>
+                        
+                        <!-- Buscador -->
+                        <div class="search-container">
+                            <span class="search-icon">🔍</span>
+                            <input type="text" id="searchInput" 
+                                   class="search-input"
+                                   placeholder="Buscar tareas...">
+                        </div>
+                    </div>
+                    
+                    <!-- Lista de tareas -->
+                    <div id="taskContainer">
+                        <ul id="taskList" class="task-list">
+                            <!-- Las tareas se cargarán aquí dinámicamente -->
+                        </ul>
+                        
+                        <!-- Estado vacío -->
+                        <div id="emptyState" class="empty-state hidden">
+                            <span class="empty-icon">📝</span>
+                            <p class="empty-title">No hay tareas para mostrar</p>
+                            <p class="empty-subtitle">¡Agrega tu primera tarea!</p>
+                        </div>
+                        
+                        <!-- Loading -->
+                        <div id="loadingState" class="loading-state hidden">
+                            <div class="spinner"></div>
+                            <p>Cargando tareas...</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Paginación -->
+                    <div id="pagination" class="pagination hidden">
+                        <button id="prevPage" class="pagination-btn">
+                            <span class="icon">◀️</span>
+                        </button>
+                        
+                        <div id="pageInfo" class="page-info">
+                            Página <span id="currentPage">1</span> de <span id="totalPages">1</span>
+                        </div>
+                        
+                        <button id="nextPage" class="pagination-btn">
+                            <span class="icon">▶️</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
