@@ -21,8 +21,8 @@ task-list/
 ├── style.css
 ├── script.js
 ├── backend/
-│   ├── app.py
-│   └── requirements.txt
+    ├── app.py
+    └── requirements.txt
 ├── README.md
 └── .gitignore
 
