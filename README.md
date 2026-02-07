@@ -1,21 +1,21 @@
-# 📝 Lista de Tareas
+# Lista de Tareas
 
 Una aplicación web moderna para gestionar tareas con prioridades, construida con HTML, CSS, JavaScript (frontend) y Flask con SQLAlchemy (backend).
 
-## ✨ Características
+## Características
 
-- ✅ **Gestión completa de tareas**: Agregar, editar y eliminar tareas
-- 🎯 **Sistema de prioridades**: Baja (🟢), Media (🟡), Alta (🔴)
-- 🔍 **Búsqueda en tiempo real**: Encuentra tareas rápidamente
-- 📄 **Paginación**: Navegación eficiente con 6 tareas por página
-- 🎨 **Interfaz responsive**: Diseño adaptable con CSS Grid
-- 📊 **Estadísticas**: Contador de tareas por prioridad
-- ✅ **Validaciones**: Frontend y backend con prevención de duplicados
-- 🔔 **Notificaciones**: Alertas elegantes con SweetAlert2 y Toastr
-- 💾 **Base de datos**: SQLite con SQLAlchemy ORM
-- 🚀 **API REST**: Endpoints completos para todas las operaciones
+- **Gestión completa de tareas**: Agregar, editar y eliminar tareas
+- **Sistema de prioridades**: Baja (🟢), Media (🟡), Alta (🔴)
+- **Búsqueda en tiempo real**: Encuentra tareas rápidamente
+- **Paginación**: Navegación eficiente con 6 tareas por página
+- **Interfaz responsive**: Diseño adaptable con CSS Grid
+- **Estadísticas**: Contador de tareas por prioridad
+- **Validaciones**: Frontend y backend con prevención de duplicados
+- **Notificaciones**: Alertas elegantes con SweetAlert2 y Toastr
+- **Base de datos**: SQLite con SQLAlchemy ORM
+- **API REST**: Endpoints completos para todas las operaciones
 
-## 🏗️ Estructura del Proyecto
+## Estructura del Proyecto
 task-list/
 ├── index.html
 ├── style.css
